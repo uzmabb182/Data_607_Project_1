@@ -21,6 +21,9 @@ When you click the **Knit** button a document will be generated that includes bo
 You can also embed plots, for example:
 
 ```{r}
+# Load required libraries
+library(tidyverse)
+library(dbplyr)
 
 ```
 
@@ -49,7 +52,13 @@ row_count
 ```
 
 ```{r}
-str(tournament_data)
+n <- length(tournament_data)
+```
+
+```{r}
+
+row1 <- tournament_data[seq(2, n, 3)]
+row2 <- tournament_data[seq(3, n, 3)]
 ```
 
 ```{r}
@@ -58,9 +67,12 @@ str(tournament_data)
 ```
 
 ```{r}
-## Save all data into TournamentResults dataframe
-#TournamentResults <- data.frame(PlayerNames, PlayerStates, TotalPoints, PreRatings, RatingAverages)
-#colnames(TournamentResults) <- c("Player Name","Player State", "Total Number of Points", "Player's Pre-Rating", "Average Pre Chess Rating of Opponents")
+
+
+```
+
+```{r}
+
 ```
 
 ```{r}
