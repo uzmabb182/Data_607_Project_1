@@ -202,8 +202,8 @@ vec2 <- c(player1_state,player2_state)
 new_df = data.frame(player_name = vec1,
                  player_state= vec2,
                  total_number_of_points = vec3
-                # player_pre_rating = .
-                 #average_pre_chess_rating_of_opponents = ,
+                # player_pre_rating = ,
+                 #average_pre_chess_rating_of_opponents = 
                 )
 new_df
                  
@@ -267,15 +267,32 @@ vec4 <- c(player_rating_1, player_rating_2)
 ```
 
 ```{r}
-# Creating a data frame with eid , ename,salary as columns
+# Creating a data frame with player name, state,number of points ...
 new_df = data.frame(player_name = vec1,
                  player_state= vec2,
                  total_number_of_points = vec3,
-                 player_pre_rating = vec4)
-              
+                 player_pre_rating = vec4
+                  ) 
                
 new_df
 ```
+```{r}
+player1_opponent_pre_rating <- c (1716, 1649, 1663, 1610, 1600, 1563, 1436)
+  
+player2_opponent_pre_rating <- c (1655, 1552, 1399, 1363, 955)
+```
+
+# Calculating the average pre rating of the opponants
+```{r}
+average1_pre_chess_rating_of_opponents <-  mean(player1_opponent_pre_rating)
+average1_pre_chess_rating_of_opponents
+```
+
+```{r}
+average2_pre_chess_rating_of_opponents <-  mean(player2_opponent_pre_rating)
+average2_pre_chess_rating_of_opponents
+```
+
 
 ```{r}
 # Get working directory path
@@ -283,6 +300,6 @@ path <- getwd()
 
 path
 # Export file to working directory.  The file.path function has been used to ensure platform independence (i.e. take into account the different path syntaxes for various operating systems)
-#write.csv(tournament_data, file.path(path, "chess_cleaned_data.csv"))
+write.csv(tournament_data, file.path(path, "chess_cle.aned_data.csv"))
 ```
 
