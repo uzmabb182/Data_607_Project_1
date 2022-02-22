@@ -24,13 +24,15 @@ You can also embed plots, for example:
 # Load required libraries
 library(tidyverse)
 library(dbplyr)
-
+library(stringr)
 ```
 
 ```{r}
+
 tournament_data <- read.delim("https://raw.githubusercontent.com/uzmabb182/Data_607_Project_1/main/tournament.txt", header=F, sep="|", quote = "")
 
 tournament_data
+
 ```
 # Fetching row count
 ```{r}
@@ -42,7 +44,7 @@ row_count
 ```{r}
 tournament_data <- tournament_data[-c(seq(1, row_count, by=3)),]
 
-head(tournament_data)
+tournament_data
 ```
 
 ```{r}
@@ -52,27 +54,157 @@ row_count
 ```
 
 ```{r}
+tournament_data$V1 <- trimws(tournament_data$V1, which = c("left"))
+tournament_data$V1 <- trimws(tournament_data$V1, which = c("right"))
+```
+
+```{r}
 n <- length(tournament_data)
 ```
+# Removing two header rows
+```{r}
+tournament_data <- tournament_data[-c(seq(1, 2, by=1)),]
+
+tournament_data
+```
+# Fetching row for player1 that we want to collect the data
+```{r}
+# converting first row into character vector
+player1_vector = as.character(tournament_data[1, ]);
+player1_vector
+
+```
+# Extracting the number values from V1
+```{r}
+player1 <- str_extract(player1_vector, "\\d+")
+player1
+player1[1]
+
+```
+```{r}
+player1 <- player1[! player1 %in% c('6')]
+player1
+```
 
 ```{r}
+player1<-player1[!is.na(player1)]
+player1
+```
 
-row1 <- tournament_data[seq(2, n, 3)]
-row2 <- tournament_data[seq(3, n, 3)]
+# Fetching row for player2 that we want to collect the data 
+```{r}
+
+player2_row <- tournament_data[str_detect(tournament_data$V1, "37"), ]
+player2_row
+```
+
+```{r}
+# converting player2 row into character vector
+player2_vector = as.character(player2_row[1, ]);
+player2_vector
+
+
+```
+# Extracting the numbers into vector
+```{r}
+player2 <- str_extract(player2_vector, "\\d+")
+player2
+player2[1]
 ```
 
 ```{r}
 
+player2 <- player2[! player2 %in% c('3')]
+player2
+```
+# Removing the null string
+```{r}
+player2<-player2[!is.na(player2)]
+player2
+
+```
+# Fetching players state
+```{r}
+player1_state = c()
+for (i in (1:nrow(tournament_data))){
+  
+ if (tournament_data$V1[i] %in% player1){
+    
+    #print(tournament_data$V1[i+1])
+    player1_state <- c(player1_state, tournament_data$V1[i+1]) 
+ }
+
+} 
+
+print(player1_state)
+
+```
+
+```{r}
+nrow(tournament_data)
+```
+
+```{r}
+player2_state = c()
+for (i in (1:nrow(tournament_data))){
+  
+ if (tournament_data$V1[i] %in% player2){
+    
+    #print(tournament_data$V1[i+1])
+    player2_state <- c(player2_state, tournament_data$V1[i+1]) 
+ }
+
+} 
+
+print(player2_state)
+
+```
+# Combining the state vectors
+```{r}
+player_state <- str_c(c(player1_state, player2_state), collapse = ", ")
+player_state
+```
+
+```{r}
+player2_row <- tournament_data[str_detect(tournament_data$V1, "37"), ]
+player2_row  
+```
+
+```{r}
+df <- filter(tournament_data, tournament_data$V1 %in% player1)
+df1 <- filter(tournament_data, tournament_data$V1 %in% player2)
+df
+```
+
+```{r}
+data1 <- rbind(df, df1)              # Apply rbind function
+data1  
+```
+
+```{r}
+data1$V2 <- trimws(data1$V2, which = c("both"))
 
 ```
 
 ```{r}
 
-
+data1
 ```
 
 ```{r}
+vec1 <- data1$V2
+vec3 <- data1$V3
+vec2 <- c(player1_state,player2_state)
+```
 
+```{r}
+# Creating a data frame with eid , ename,salary as columns
+df2 = data.frame(player_name = vec1,
+                 player_state= vec2,
+                 player_point = vec3)
+
+df2
+                 
 ```
 
 ```{r}
