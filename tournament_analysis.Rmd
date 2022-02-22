@@ -199,12 +199,41 @@ vec2 <- c(player1_state,player2_state)
 
 ```{r}
 # Creating a data frame with eid , ename,salary as columns
-df2 = data.frame(player_name = vec1,
+new_df = data.frame(player_name = vec1,
                  player_state= vec2,
-                 player_point = vec3)
-
-df2
+                 total_number_of_points = vec3
+                # player_pre_rating = .
+                 #average_pre_chess_rating_of_opponents = ,
+                )
+new_df
                  
+```
+
+```{r}
+tournament_data
+```
+# Now fetching row for rating by matching with V1 number
+```{r}
+player1_rating = c()
+for (i in (1:nrow(tournament_data))){
+  
+ if (tournament_data$V1[i] %in% player1){
+    
+    #print(tournament_data$V1[i+1])
+    player1_rating<- c(player1_rating, tournament_data$V2[i+1]) 
+ }
+
+} 
+
+print(player1_rating)
+
+```
+Now cleaning the strings in a vector
+```{r}
+
+rating1 <- as.integer(str_extract(player1_rating, "[^\\d]\\d{3,4}[^\\d]"))
+rating1
+
 ```
 
 ```{r}
