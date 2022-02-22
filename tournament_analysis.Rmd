@@ -212,7 +212,7 @@ new_df
 ```{r}
 tournament_data
 ```
-# Now fetching row for rating by matching with V1 number
+# Now fetching row for player1 rating by matching with V1 number
 ```{r}
 player1_rating = c()
 for (i in (1:nrow(tournament_data))){
@@ -228,12 +228,53 @@ for (i in (1:nrow(tournament_data))){
 print(player1_rating)
 
 ```
-Now cleaning the strings in a vector
+# Now cleaning the strings in a vector for player 1
 ```{r}
 
-rating1 <- as.integer(str_extract(player1_rating, "[^\\d]\\d{3,4}[^\\d]"))
-rating1
+player_rating_1 <- as.integer(str_extract(str_extract(player1_rating, "[^\\d]\\d{3,4}[^\\d]"), "\\d+"))
 
+player_rating_1
+```
+# Now fetching row for player2 rating by matching with V1 number
+```{r}
+player2_rating = c()
+for (i in (1:nrow(tournament_data))){
+  
+ if (tournament_data$V1[i] %in% player2){
+    
+    #print(tournament_data$V1[i+1])
+    player2_rating<- c(player2_rating, tournament_data$V2[i+1]) 
+ }
+
+} 
+
+print(player2_rating)
+
+
+```
+# Now cleaning the strings in a vector for player 2
+```{r}
+player_rating_2 <- as.integer(str_extract(str_extract(player2_rating, "[^\\d]\\d{3,4}[^\\d]"), "\\d+"))
+
+player_rating_2
+```
+
+```{r}
+vec1 <- data1$V2
+vec2 <- c(player1_state, player2_state)
+vec3 <- data1$V3
+vec4 <- c(player_rating_1, player_rating_2)
+```
+
+```{r}
+# Creating a data frame with eid , ename,salary as columns
+new_df = data.frame(player_name = vec1,
+                 player_state= vec2,
+                 total_number_of_points = vec3,
+                 player_pre_rating = vec4)
+              
+               
+new_df
 ```
 
 ```{r}
