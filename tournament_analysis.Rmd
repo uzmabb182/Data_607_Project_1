@@ -123,26 +123,42 @@ points_vector <- trimws(points_vector, which = c("both"))
 
 name_vector
 ```
+
 # Now steps for fetching each player's opponent scores
+
 ```{r}
-temp_data <- select(temp_data, V1, V4:V9)
+temp_data <- select(temp_data, V4:V9)
 
 temp_data
-```
-# Now fetching opponent's numbers for calculating averages
-```{r}
-opponent_vector <- temp_data[1, ]
-
-opponent_vector <- str_extract(opponent_vector, "\\d+")
-
-opponent_vector
-```
-
-```{r}
 
 ```
 
+# Now fetching, extracting and removing spaces of opponent's numbers for calculating averages
+
 ```{r}
+for (i in (1:nrow(temp_data))){
+  
+ 
+  opponent_vector <- temp_data[1, ]
+  
+  opponent_vector <- str_extract(opponent_vector, "\\d+")
+  
+  opponent_vector <- trimws(opponent_vector, which = c("both"))
+
+  for (j in (1:length(opponent_vector))){
+    
+    for (k in (1:nrow(new_df))){
+      
+      if new_df$player_number
+    }
+  } 
+}
+
+
+```
+
+```{r}
+opponent_vector[1]
 
 ```
 
