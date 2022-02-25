@@ -92,8 +92,9 @@ score_vector <- str_sub(score_vector, (str_locate( "15445895 / R: 1794", "1794")
 
 score_vector
 ```
-# Removing the extra spaces from both sides of the core string
+# Removing the extra spaces from both sides of the strings stored in state and score vector
 ```{r}
+state_vector <- trimws(state_vector, which = c("both"))
 score_vector <- trimws(score_vector, which = c("both"))
 
 score_vector
@@ -122,9 +123,19 @@ points_vector <- trimws(points_vector, which = c("both"))
 
 name_vector
 ```
-
+# Now steps for fetching each player's opponent scores
 ```{r}
+temp_data <- select(temp_data, V1, V4:V9)
 
+temp_data
+```
+# Now fetching opponent's numbers for calculating averages
+```{r}
+opponent_vector <- temp_data[1, ]
+
+opponent_vector <- str_extract(opponent_vector, "\\d+")
+
+opponent_vector
 ```
 
 ```{r}
@@ -133,12 +144,6 @@ name_vector
 
 ```{r}
 
-```
-
-```{r}
-player_rating_1 <- as.integer(str_extract(str_extract(player1_rating, "[^\\d]\\d{3,4}[^\\d]"), "\\d+"))
-
-player_rating_1
 ```
 
 ```{r}
@@ -168,10 +173,10 @@ n <- length(tournament_data)
 ```
 
 ```{r}
-tournament_data$V1 <- trimws(tournament_data$V1, which = c("left"))
-tournament_data$V1 <- trimws(tournament_data$V1, which = c("right"))
+
+
 ```
-# Fetching row for player1 that we want to collect the data
+
 ```{r}
 # converting first row into character vector
 player1_vector = as.character(tournament_data[1, ]);
