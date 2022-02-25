@@ -46,6 +46,112 @@ tournament_data <- tournament_data[-c(seq(1, row_count, by=3)),]
 
 tournament_data
 ```
+# Removing unwanted first two more rows
+```{r}
+tournament_data <- tournament_data[-c(seq(1, 2, by=1)),]
+
+tournament_data
+```
+# Now starting the process of fetching the data that we need from the dataset.
+```{r}
+# First keeping only states and score rows in the dataset to fetch
+
+temp_data <- tournament_data[-c(seq(1, row_count, by=2)),]
+
+temp_data
+```
+# Removing the empty spaces from column V1 and V2
+```{r}
+temp_data$V1 <- trimws(temp_data$V1, which = c("both"))
+temp_data$V2 <- trimws(temp_data$V2, which = c("both"))
+temp_data
+```
+# Now fetching the rows V1 and V2 for state names and payers scores into vectors
+```{r}
+state_vector <- temp_data$V1
+score_vector <- temp_data$V2
+
+state_vector
+```
+
+```{r}
+length(state_vector)
+```
+
+```{r}
+score_vector
+```
+# Finding the location of the score string
+```{r}
+str_locate( "15445895 / R: 1794", "1794")
+
+```
+# Using the string location to fetch the score string
+```{r}
+score_vector <- str_sub(score_vector, (str_locate( "15445895 / R: 1794", "1794"))) 
+
+score_vector
+```
+# Removing the extra spaces from both sides of the core string
+```{r}
+score_vector <- trimws(score_vector, which = c("both"))
+
+score_vector
+```
+
+```{r}
+# Now keeping only names and score rows in the dataset to fetch
+
+temp_data <- tournament_data[-c(seq(2, row_count, by=2)),]
+
+temp_data
+```
+# Now fetching the rows V1 and V2 for player's number, name and points into vectors
+```{r}
+number_vector <- temp_data$V1
+name_vector <- temp_data$V2
+points_vector <- temp_data$V3
+
+name_vector
+```
+# Removing the extra spaces from strings stored in the vectors list
+```{r}
+number_vector <- trimws(number_vector, which = c("both"))
+name_vector <- trimws(name_vector, which = c("both"))
+points_vector <- trimws(points_vector, which = c("both"))
+
+name_vector
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+player_rating_1 <- as.integer(str_extract(str_extract(player1_rating, "[^\\d]\\d{3,4}[^\\d]"), "\\d+"))
+
+player_rating_1
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
 
 ```{r}
 row_count <- nrow(tournament_data)
@@ -54,18 +160,16 @@ row_count
 ```
 
 ```{r}
-tournament_data$V1 <- trimws(tournament_data$V1, which = c("left"))
-tournament_data$V1 <- trimws(tournament_data$V1, which = c("right"))
-```
-
-```{r}
 n <- length(tournament_data)
 ```
-# Removing two header rows
-```{r}
-tournament_data <- tournament_data[-c(seq(1, 2, by=1)),]
 
-tournament_data
+```{r}
+
+```
+
+```{r}
+tournament_data$V1 <- trimws(tournament_data$V1, which = c("left"))
+tournament_data$V1 <- trimws(tournament_data$V1, which = c("right"))
 ```
 # Fetching row for player1 that we want to collect the data
 ```{r}
@@ -182,16 +286,17 @@ data1
 ```
 
 ```{r}
-data1$V2 <- trimws(data1$V2, which = c("both"))
+
 
 ```
 
 ```{r}
-
+data1$V2 <- trimws(data1$V2, which = c("both"))
 data1
 ```
 
 ```{r}
+
 vec1 <- data1$V2
 vec3 <- data1$V3
 vec2 <- c(player1_state,player2_state)
