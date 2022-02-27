@@ -54,7 +54,7 @@ tournament_data
 ```
 # Now starting the process of fetching the data that we need from the dataset.
 ```{r}
-# First keeping only states and score rows in the dataset to fetch
+# First filtering only states and score rows from the dataset 
 
 temp_data <- tournament_data[-c(seq(1, row_count, by=2)),]
 
@@ -95,13 +95,13 @@ score_vector
 # Removing the extra spaces from both sides of the strings stored in state and score vector
 ```{r}
 state_vector <- trimws(state_vector, which = c("both"))
-score_vector <- trimws(score_vector, which = c("both"))
+score_vector <- as.numeric(trimws(score_vector, which = c("both")))
 
 score_vector
 ```
 
 ```{r}
-# Now keeping only names and score rows in the dataset to fetch
+# Now fetching only names and score rows in the dataset 
 
 temp_data <- tournament_data[-c(seq(2, row_count, by=2)),]
 
@@ -117,11 +117,22 @@ name_vector
 ```
 # Removing the extra spaces from strings stored in the vectors list
 ```{r}
-number_vector <- trimws(number_vector, which = c("both"))
+number_vector <- as.numeric(trimws(number_vector, which = c("both")))
 name_vector <- trimws(name_vector, which = c("both"))
-points_vector <- trimws(points_vector, which = c("both"))
+points_vector <- as.numeric(trimws(points_vector, which = c("both")))
 
 name_vector
+```
+# Creating new dataframe for storing the vectors
+```{r}
+
+new_df = data.frame(player_number = number_vector,
+                 player_name= name_vector,
+                 player_state= state_vector,
+                 player_points = points_vector,
+                 player_score = score_vector
+                )
+new_df
 ```
 
 # Now steps for fetching each player's opponent scores
@@ -136,38 +147,64 @@ temp_data
 # Now fetching, extracting and removing spaces of opponent's numbers for calculating averages
 
 ```{r}
+
+opponent_pre_rating_average <- vector(mode="numeric")
+
+#Now fetch these specific opponent's rows  and perform manipulation
+
 for (i in (1:nrow(temp_data))){
   
- 
-  opponent_vector <- temp_data[1, ]
-  
-  opponent_vector <- str_extract(opponent_vector, "\\d+")
-  
-  opponent_vector <- trimws(opponent_vector, which = c("both"))
 
-  for (j in (1:length(opponent_vector))){
-    
-    for (k in (1:nrow(new_df))){
-      
-      if new_df$player_number
-    }
-  } 
+opponent_vector <- temp_data[i, ]
+  
+opponent_vector <- str_extract(opponent_vector, "\\d+")
+  
+opponent_vector <- as.numeric(trimws(opponent_vector, which = c("both")))
+  
+#new_df$player_number %in% opponent_vector
+
+# Saving opponent's score rows into a dataframe
+
+opponent_df <- new_df[opponent_vector,] 
+
+#opponent_df
+
+# Fetching the opponents score into a vector and calculating pre rating average
+
+opponent_score_vector <- as.numeric(opponent_df$player_score)
+
+opponent_average <- sum(opponent_score_vector)/length(opponent_score_vector)
+
+#opponent_average
+
+# Saving the average into a vector
+
+opponent_pre_rating_average[i] <- opponent_average
+
+#opponent_pre_rating_average[1]
+  
+#Now fetch these specific opponent's rows  and perform manipulation
+  
+  
 }
 
+#opponent_vector
 
-```
 
-```{r}
-opponent_vector[1]
-
-```
-
-```{r}
 
 ```
 
 ```{r}
 
+opponent_pre_rating_average
+
+```
+
+```{r}
+new_df$pre_rating_average <- opponent_pre_rating_average
+
+new_df
+
 ```
 
 ```{r}
@@ -175,13 +212,15 @@ opponent_vector[1]
 ```
 
 ```{r}
-row_count <- nrow(tournament_data)
 
-row_count
 ```
 
 ```{r}
-n <- length(tournament_data)
+
+```
+
+```{r}
+
 ```
 
 ```{r}
