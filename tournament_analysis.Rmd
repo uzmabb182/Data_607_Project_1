@@ -138,7 +138,7 @@ new_df
 # Now steps for fetching each player's opponent scores
 
 ```{r}
-temp_data <- select(temp_data, V4:V9)
+temp_data <- select(temp_data, V4:V10)
 
 temp_data
 
@@ -147,6 +147,7 @@ temp_data
 # Now fetching, extracting and removing spaces of opponent's numbers for calculating averages
 
 ```{r}
+# Declaring a new empty vector 
 
 opponent_pre_rating_average <- vector(mode="numeric")
 
@@ -160,8 +161,12 @@ opponent_vector <- temp_data[i, ]
 opponent_vector <- str_extract(opponent_vector, "\\d+")
   
 opponent_vector <- as.numeric(trimws(opponent_vector, which = c("both")))
+
+# Replacing NA with 0 in a vector
+
+opponent_vector[is.na(opponent_vector)] <- 0
+
   
-#new_df$player_number %in% opponent_vector
 
 # Saving opponent's score rows into a dataframe
 
@@ -194,6 +199,8 @@ opponent_pre_rating_average[i] <- opponent_average
 
 ```
 
+
+
 ```{r}
 
 opponent_pre_rating_average
@@ -201,270 +208,26 @@ opponent_pre_rating_average
 ```
 
 ```{r}
-new_df$pre_rating_average <- opponent_pre_rating_average
+new_df$pre_rating_average <- round(opponent_pre_rating_average, 2)
 
 new_df
 
 ```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-
-```
-
-```{r}
-# converting first row into character vector
-player1_vector = as.character(tournament_data[1, ]);
-player1_vector
-
-```
-# Extracting the number values from V1
-```{r}
-player1 <- str_extract(player1_vector, "\\d+")
-player1
-player1[1]
-
-```
-```{r}
-player1 <- player1[! player1 %in% c('6')]
-player1
-```
-
-```{r}
-player1<-player1[!is.na(player1)]
-player1
-```
-
-# Fetching row for player2 that we want to collect the data 
-```{r}
-
-player2_row <- tournament_data[str_detect(tournament_data$V1, "37"), ]
-player2_row
-```
-
-```{r}
-# converting player2 row into character vector
-player2_vector = as.character(player2_row[1, ]);
-player2_vector
-
-
-```
-# Extracting the numbers into vector
-```{r}
-player2 <- str_extract(player2_vector, "\\d+")
-player2
-player2[1]
-```
-
-```{r}
-
-player2 <- player2[! player2 %in% c('3')]
-player2
-```
-# Removing the null string
-```{r}
-player2<-player2[!is.na(player2)]
-player2
-
-```
-# Fetching players state
-```{r}
-player1_state = c()
-for (i in (1:nrow(tournament_data))){
-  
- if (tournament_data$V1[i] %in% player1){
-    
-    #print(tournament_data$V1[i+1])
-    player1_state <- c(player1_state, tournament_data$V1[i+1]) 
- }
-
-} 
-
-print(player1_state)
-
-```
-
-```{r}
-nrow(tournament_data)
-```
-
-```{r}
-player2_state = c()
-for (i in (1:nrow(tournament_data))){
-  
- if (tournament_data$V1[i] %in% player2){
-    
-    #print(tournament_data$V1[i+1])
-    player2_state <- c(player2_state, tournament_data$V1[i+1]) 
- }
-
-} 
-
-print(player2_state)
-
-```
-# Combining the state vectors
-```{r}
-player_state <- str_c(c(player1_state, player2_state), collapse = ", ")
-player_state
-```
-
-```{r}
-player2_row <- tournament_data[str_detect(tournament_data$V1, "37"), ]
-player2_row  
-```
-
-```{r}
-df <- filter(tournament_data, tournament_data$V1 %in% player1)
-df1 <- filter(tournament_data, tournament_data$V1 %in% player2)
-df
-```
-
-```{r}
-data1 <- rbind(df, df1)              # Apply rbind function
-data1  
-```
-
-```{r}
-
-
-```
-
-```{r}
-data1$V2 <- trimws(data1$V2, which = c("both"))
-data1
-```
-
-```{r}
-
-vec1 <- data1$V2
-vec3 <- data1$V3
-vec2 <- c(player1_state,player2_state)
-```
-
-```{r}
-# Creating a data frame with eid , ename,salary as columns
-new_df = data.frame(player_name = vec1,
-                 player_state= vec2,
-                 total_number_of_points = vec3
-                # player_pre_rating = ,
-                 #average_pre_chess_rating_of_opponents = 
-                )
-new_df
-                 
-```
-
-```{r}
-tournament_data
-```
-# Now fetching row for player1 rating by matching with V1 number
-```{r}
-player1_rating = c()
-for (i in (1:nrow(tournament_data))){
-  
- if (tournament_data$V1[i] %in% player1){
-    
-    #print(tournament_data$V1[i+1])
-    player1_rating<- c(player1_rating, tournament_data$V2[i+1]) 
- }
-
-} 
-
-print(player1_rating)
-
-```
-# Now cleaning the strings in a vector for player 1
-```{r}
-
-player_rating_1 <- as.integer(str_extract(str_extract(player1_rating, "[^\\d]\\d{3,4}[^\\d]"), "\\d+"))
-
-player_rating_1
-```
-# Now fetching row for player2 rating by matching with V1 number
-```{r}
-player2_rating = c()
-for (i in (1:nrow(tournament_data))){
-  
- if (tournament_data$V1[i] %in% player2){
-    
-    #print(tournament_data$V1[i+1])
-    player2_rating<- c(player2_rating, tournament_data$V2[i+1]) 
- }
-
-} 
-
-print(player2_rating)
-
-
-```
-# Now cleaning the strings in a vector for player 2
-```{r}
-player_rating_2 <- as.integer(str_extract(str_extract(player2_rating, "[^\\d]\\d{3,4}[^\\d]"), "\\d+"))
-
-player_rating_2
-```
-
-```{r}
-vec1 <- data1$V2
-vec2 <- c(player1_state, player2_state)
-vec3 <- data1$V3
-vec4 <- c(player_rating_1, player_rating_2)
-```
-
-```{r}
-# Creating a data frame with player name, state,number of points ...
-new_df = data.frame(player_name = vec1,
-                 player_state= vec2,
-                 total_number_of_points = vec3,
-                 player_pre_rating = vec4
-                  ) 
-               
-new_df
-```
-```{r}
-player1_opponent_pre_rating <- c (1716, 1649, 1663, 1610, 1600, 1563, 1436)
-  
-player2_opponent_pre_rating <- c (1655, 1552, 1399, 1363, 955)
-```
-
-# Calculating the average pre rating of the opponants
-```{r}
-average1_pre_chess_rating_of_opponents <-  mean(player1_opponent_pre_rating)
-average1_pre_chess_rating_of_opponents
-```
-
-```{r}
-average2_pre_chess_rating_of_opponents <-  mean(player2_opponent_pre_rating)
-average2_pre_chess_rating_of_opponents
-```
-
 
 ```{r}
 # Get working directory path
 path <- getwd()
 
 path
+
+```
+
+
+```{r}
 # Export file to working directory.  The file.path function has been used to ensure platform independence (i.e. take into account the different path syntaxes for various operating systems)
-write.csv(tournament_data, file.path(path, "chess_cle.aned_data.csv"))
+
+write.csv(new_df, file.path(path, "chess_cleaned_data.csv"))
+
+
 ```
 
