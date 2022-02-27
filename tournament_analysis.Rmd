@@ -224,7 +224,7 @@ path
 
 
 ```{r}
-# Export file to working directory.  The file.path function has been used to ensure platform independence (i.e. take into account the different path syntaxes for various operating systems)
+# Export file as csv to working directory.  
 
 write.csv(new_df, file.path(path, "chess_cleaned_data.csv"))
 
