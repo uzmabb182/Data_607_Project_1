@@ -16,9 +16,7 @@ When you click the **Knit** button a document will be generated that includes bo
 ```{r}
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
+# Required Libraries are imported
 
 ```{r}
 # Load required libraries
@@ -52,7 +50,7 @@ tournament_data <- tournament_data[-c(seq(1, 2, by=1)),]
 
 tournament_data
 ```
-# Now starting the process of fetching the data that we need from the dataset.
+# Now starting the process of fetching the rows that we need from the dataset.
 ```{r}
 # First filtering only states and score rows from the dataset 
 
@@ -66,7 +64,7 @@ temp_data$V1 <- trimws(temp_data$V1, which = c("both"))
 temp_data$V2 <- trimws(temp_data$V2, which = c("both"))
 temp_data
 ```
-# Now fetching the rows V1 and V2 for state names and payers scores into vectors
+# Now fetching the rows V1 and V2 for state names and players scores into vectors
 ```{r}
 state_vector <- temp_data$V1
 score_vector <- temp_data$V2
@@ -99,7 +97,7 @@ score_vector <- as.numeric(trimws(score_vector, which = c("both")))
 
 score_vector
 ```
-
+# Now creating a temporary data frame for next set of rows to be fetched
 ```{r}
 # Now fetching only names and score rows in the dataset 
 
@@ -135,7 +133,7 @@ new_df = data.frame(player_number = number_vector,
 new_df
 ```
 
-# Now steps for fetching each player's opponent scores
+# Now performing steps for fetching each player's opponent scores
 
 ```{r}
 temp_data <- select(temp_data, V4:V10)
@@ -208,12 +206,13 @@ opponent_pre_rating_average
 ```
 
 ```{r}
+
 new_df$pre_rating_average <- round(opponent_pre_rating_average, 2)
 
 new_df
 
 ```
-
+# Checking the working directory path and exporting data frame into a CSV file
 ```{r}
 # Get working directory path
 path <- getwd()
